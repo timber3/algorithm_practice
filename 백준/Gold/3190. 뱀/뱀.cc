@@ -21,8 +21,6 @@ int dy[] = { 1, 0 ,-1 ,0 };
 
 void solve()
 {
-	int x = 0;
-	int y = 0;
 	while (1)
 	{
 		cnt++;

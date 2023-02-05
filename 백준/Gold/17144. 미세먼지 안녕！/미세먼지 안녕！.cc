@@ -1,136 +1,137 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int r, c, t;
-int room[51][51];
-int add[51][51];
-int dr[4] = {0, 1, 0, -1};
-int dc[4] = {-1, 0, 1, 0};
-int up_row, down_row; // 공기청정기 윗부분과 아랫부분의 행
-int total_dust;       // 총 먼지량
+int sum = 0;
+int Map[51][51];
 
-void input()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+int dx[] = { 0, 0, -1, 1 };
+int dy[] = { 1, -1 ,0, 0 };
 
-    cin >> r >> c >> t;
-    bool flag = false;
-    for (int i = 0; i < r; i++)
-    {
-        for (int j = 0; j < c; j++)
-        {
-            cin >> room[i][j];
-            if (room[i][j] == -1)
-            {
-                if (!flag)
-                {
-                    up_row = i;
-                    flag = true;
-                }
-                else
-                    down_row = i;
-            }
-            else
-                total_dust += room[i][j];
-        }
-    }
-}
-
-// 먼지의 확산 함수
-void spreadDust()
-{
-    // 미세먼지 확산량 계산
-    for (int i = 0; i < r; i++)
-    {
-        for (int j = 0; j < c; j++)
-        {
-            int cnt = 0;
-            int val = room[i][j] / 5;
-            if (room[i][j] == 0 || room[i][j] == -1)
-                continue;
-            for (int k = 0; k < 4; k++)
-            {
-                int nr = i + dr[k];
-                int nc = j + dc[k];
-                if (nr < 0 || nr >= r || nc < 0 || nc >= c)
-                    continue;
-                if (room[nr][nc] == -1)
-                    continue;
-                add[nr][nc] += val;
-                cnt++;
-            }
-            add[i][j] -= (cnt * val);
-        }
-    }
-
-    // 미세먼지 확산 업데이트
-    for (int i = 0; i < r; i++)
-    {
-        for (int j = 0; j < c; j++)
-        {
-            room[i][j] += add[i][j];
-            add[i][j] = 0;
-        }
-    }
-}
-
-// 공기청정기 순환에 의한 먼지 이동
-void airCleaner()
-{
-    // 사라지는 먼지 계산
-    total_dust -= room[up_row - 1][0];
-    total_dust -= room[down_row + 1][0];
-
-    // 위의 공기 순환 (반시계)
-    // 1. 왼쪽줄
-    for (int i = up_row - 1; i > 0; i--)
-        room[i][0] = room[i - 1][0];
-    // 2. 윗줄
-    for (int i = 0; i < c - 1; i++)
-        room[0][i] = room[0][i + 1];
-    // 3. 오른쪽줄
-    for (int i = 1; i <= up_row; i++)
-        room[i - 1][c - 1] = room[i][c - 1];
-    // 4. 아랫줄
-    for (int i = c - 1; i > 1; i--)
-        room[up_row][i] = room[up_row][i - 1];
-    room[up_row][1] = 0;
-
-    // 아래공기 순환 (시계)
-    // 1. 왼쪽줄
-    for (int i = down_row + 1; i < r - 1; i++)
-        room[i][0] = room[i + 1][0];
-    // 2. 아랫줄
-    for (int i = 0; i < c - 1; i++)
-        room[r - 1][i] = room[r - 1][i + 1];
-    // 3. 오른쪽줄
-    for (int i = r - 1; i >= down_row; i--)
-        room[i][c - 1] = room[i - 1][c - 1];
-    // 4. 윗줄
-    for (int i = c - 1; i > 1; i--)
-        room[down_row][i] = room[down_row][i - 1];
-    room[down_row][1] = 0;
-}
+// 공기청정기 윗부분1 아랫부분2
+int filter_x1;
+int filter_y1;
+int filter_x2;
+int filter_y2;
 
 void solve()
 {
-    while (t--)
-    {
-        // 미세먼지 확산
-        spreadDust();
-        // 공기순환에 의한 미세먼지 이동
-        airCleaner();
-    }
-    cout << total_dust << '\n';
+	while (t--)
+	{
+		vector<pair<int, pair<int, int>>> dust;
+
+		// 먼지는 동시에 확산하기 때문에 벡터에 담아둔 후 여기서만 확산시키기
+		for (int i = 0; i < r; i++)
+		{
+			for (int j = 0; j < c; j++)
+			{
+				if (Map[i][j] != -1 && Map[i][j] != 0)
+				{
+					dust.push_back({ Map[i][j],{ i,j } });
+				}
+			}
+		}
+
+		// 1. 먼지의 확산
+		for (int i = 0; i < dust.size(); i++)
+		{
+			int val = dust[i].first;
+			int x = dust[i].second.first;
+			int y = dust[i].second.second;
+			int div_cnt = 0;
+
+			for (int j = 0; j < 4; j++)
+			{
+				int nx = x + dx[j];
+				int ny = y + dy[j];
+
+				// nx,ny 가 범위를 벗어나거나 공기청정기면 확산이 안됨
+				if (nx < 0 || ny < 0 || nx >= r || ny >= c || Map[nx][ny] == -1)
+					continue;
+
+				Map[nx][ny] += val / 5;
+				div_cnt++;
+			}
+
+			Map[x][y] -= (val / 5) * div_cnt;
+		}
+
+		// 2. 공기청정기 작동
+		for (int i = filter_x1 - 1; i >= 0; i--)
+		{
+			if (Map[i + 1][0] == -1)
+				Map[i][0] = 0;
+			else
+				Map[i + 1][0] = Map[i][0];
+		}
+
+		for (int i = filter_x2 + 1; i <= r-1; i++)
+		{
+			if (Map[i - 1][0] == -1)
+				Map[i][0] = 0;
+			else
+				Map[i - 1][0] = Map[i][0];
+		}
+
+		for (int i = 1; i <= c-1; i++)
+		{
+			Map[0][i - 1] = Map[0][i];
+			Map[r-1][i - 1] = Map[r-1][i];
+		}
+
+		for (int i = 1; i <= filter_x1; i++)
+		{
+			Map[i-1][c-1] = Map[i][c-1];
+		}
+		for (int i = r - 2; i >= filter_x2; i--)
+		{
+			Map[i+1][c-1] = Map[i][c-1];
+		}
+
+		for (int i = c-1; i > 1; i--)
+		{
+			Map[filter_x1][i] = Map[filter_x1][i - 1];
+			Map[filter_x2][i] = Map[filter_x2][i - 1];
+			Map[filter_x1][i - 1] = 0;
+			Map[filter_x2][i - 1] = 0;
+		}
+	}
 }
 
 int main()
 {
-    input();
-    solve();
+	cin >> r >> c >> t;
 
-    return 0;
+	for (int i = 0; i < r; i++)
+	{
+		for (int j = 0; j < c; j++)
+		{
+			cin >> Map[i][j];
+
+			if (Map[i][j] == -1)
+			{
+				filter_x2 = i;
+				filter_y2 = j;
+			}
+		}
+	}
+
+	filter_x1 = filter_x2 - 1;
+	filter_y1 = filter_y2;
+
+	solve();
+
+	for (int i = 0; i < r; i++)
+	{
+		for (int j = 0; j < c; j++)
+		{
+			sum += Map[i][j];
+		}
+	}
+	sum += 2;
+
+	cout << sum;
+
+	return 0;
 }

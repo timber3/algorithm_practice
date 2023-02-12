@@ -1,63 +1,86 @@
 #include <bits/stdc++.h>
 
-#define INF 987654321
-
 using namespace std;
 
-int arr[51][51];
-int dy[8][2] = { {-1,0},{1,0},{0,-1},{0,1},{1,1},{-1,-1},{-1,1},{1,-1} };
-bool ch[51][51];
-int N, M;
+int n, m;
 
-struct info {
-	int x, y, cnt;
-	info(int a, int b, int c) {
-		x = a;
-		y = b;
-		cnt = c;
-	}
+int Map[51][51] = { 0, };
+int dis[51][51] = { 0, };
+int visited[51][51] = { 0, };
+
+int dx[] = { 0, 0, 1, -1, 1, 1, -1, -1 };
+int dy[] = { 1, -1 ,0 ,0, 1, -1, 1, -1 };
+
+int Max = 0;
+typedef struct node {
+	int x;
+	int y;
+	int dis;
 };
 
-int bfs(int x, int y) {
-	memset(ch, false, sizeof(ch));
-	ch[x][y] = true;
-	queue<info> q;
-	q.push(info(x, y, 0));
-	while (!q.empty()) {
-		x = q.front().x;
-		y = q.front().y;
-		int cnt = q.front().cnt;
+queue<node> q;
+
+void bfs()
+{
+	while (!q.empty())
+	{
+		int cx = q.front().x;
+		int cy = q.front().y;
+		int cdis = q.front().dis;
+
 		q.pop();
-		if (arr[x][y] == 1) return cnt;
-		for (int k = 0; k < 8; k++) {
-			int nx = x + dy[k][0];
-			int ny = y + dy[k][1];
-			if (nx < 0 || ny < 0 || nx >= N || ny >= M || ch[nx][ny]) continue;
-			ch[nx][ny] = true;
-			q.push(info(nx, ny, cnt + 1));
+
+		for (int i = 0; i < 8; i++)
+		{
+			int nx = cx + dx[i];
+			int ny = cy + dy[i];
+
+			if (nx < 0 || ny < 0 || nx >= n || ny >= m || dis[nx][ny] == -1 || visited[nx][ny])
+				continue;
+			else
+			{
+				if (dis[nx][ny] != 0 && dis[nx][ny] < cdis + 1)
+					continue;
+				else
+				{
+					q.push({ nx, ny, cdis + 1 });
+					dis[nx][ny] = cdis + 1;
+					visited[nx][ny] = 1;
+				}
+			}
 		}
 	}
-	return INF;
 }
 
-int main() {
-	
-	cin >> N >> M;
-	vector<pair<int,int>> xy;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < M; j++) {
-			cin >> arr[i][j];
-			if (arr[i][j] == 0) xy.push_back({ i,j });
+int main()
+{
+	cin >> n >> m;
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cin >> Map[i][j];
+			if(Map[i][j] == 1)
+			{
+				dis[i][j] = -1;
+				q.push({ i, j, 0 });
+			}
 		}
 	}
-	int res = -1;
-	for (int i = 0; i < xy.size(); i++) {
-		int x = xy[i].first;
-		int y = xy[i].second;
 
-		int n = bfs(x, y);
-		res = max(res, n);
+	bfs();
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (dis[i][j] > Max)
+				Max = dis[i][j];
+		}
 	}
-	cout << res << "\n";
+
+	cout << Max;
+
 	return 0;
 }

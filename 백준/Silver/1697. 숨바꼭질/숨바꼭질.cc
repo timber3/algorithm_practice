@@ -1,64 +1,44 @@
-#include <iostream>
-#include <queue>
-
-#define endl "\n"
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int n, k;
-int cnt;
-int visit[100001] = { 0, };
+int visited[100001];
 
-struct node
-{
-	int cur;
-	int cnt;
-};
+queue<int> q;
 
-int move(int cur, int dir)
+int move(int idx, int cur)
 {
-	switch (dir)
-	{
-		case 0: // 앞으로 걷기
-		{
-			return cur + 1;
-		}	
-		case 1: // 뒤로 걷기
-		{
-			return cur - 1;
-		}
-		case 2: // 순간이동 하기
-		{
-			return cur * 2;
-		}
-	}
+	if (idx == 0)
+		return cur + 1;
+	if (idx == 1)
+		return cur - 1;
+	if (idx == 2)
+		return cur * 2;
 }
 
 void bfs()
 {
-	queue<node> q;
-	q.push({ n,0 });
-	visit[n] = 1;
-
 	while (!q.empty())
 	{
-		int cur = q.front().cur;
-		int cnt = q.front().cnt;
+		int cur = q.front();
+
 		q.pop();
 
 		if (cur == k)
-		{
-			cout << cnt;
 			return;
-		}
 
 		for (int i = 0; i < 3; i++)
 		{
-			int next = move(cur,i);
-			if (next <= 100000 && next >= 0 && !visit[next])
+			int nx = move(i, cur);
+
+			if (nx < 0 || nx >= 100001 || visited[nx] > -1)
+				continue;
+
+			else
 			{
-				q.push({ next, cnt + 1 });
-				visit[next] = 1;
+				visited[nx] = visited[cur] + 1;
+				q.push(nx);
 			}
 		}
 	}
@@ -68,7 +48,13 @@ int main()
 {
 	cin >> n >> k;
 
+	fill(visited, visited + 100001, -1);
+	q.push(n);
+	visited[n] = 0;
+
 	bfs();
+
+	cout << visited[k];
 
 	return 0;
 }

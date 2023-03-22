@@ -1,31 +1,24 @@
 #include <bits/stdc++.h>
 
-#define endl "\n"
-
 using namespace std;
 
 int n, s;
-
+int result;
 int arr[21];
-int counter = 0;
-int visited[21] = { 0, };
 
-void dfs(int cnt, int total)
+void bt(int sum, int cnt)
 {
 	if (cnt == n)
 	{
-		if ( total == s )
-		{
-			counter++;
-		}
+		if (sum == s)
+			result++;
 		return;
 	}
 
-	// 해당 숫자를 넣는 경우.
-	dfs(cnt + 1, total + arr[cnt]);
+	bt(sum, cnt + 1);
 
-	// 해당 숫자를 넣지 않는 경우.
-	dfs(cnt + 1, total);
+	bt(sum + arr[cnt], cnt + 1);
+
 }
 
 int main()
@@ -37,12 +30,12 @@ int main()
 		cin >> arr[i];
 	}
 
-	dfs(0, 0);
+	bt(0, 0);
 
 	if (s == 0)
-		counter--;
+		result--;
 
-	cout << counter;
+	cout << result;
 
 	return 0;
 }

@@ -1,32 +1,17 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-
 int n;
-int Max = 0;
-int sum = 0;
-int arr[100001];
+int w[100005];
 
-int main()
-{
-	cin >> n;
-
-	for (int i = 0; i < n; i++)
-	{
-		cin >> arr[i];
-	}
-
-	sort(arr, arr + n, greater<>());
-
-	for (int i = 0; i < n; i++)
-	{
-		if (arr[i] * (i+1) > Max )
-		{
-			Max = arr[i] * (i+1);
-		}
-	}
-
-	cout << Max;
-	return 0;
+int main(void){
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cin >> n;
+  for(int i = 0; i < n; i++) cin >> w[i];
+  sort(w, w+n);
+  int ans = 0;
+  for(int i = 1; i <= n; i++)
+    ans = max(ans, w[n-i]*i);
+  cout << ans;
 }

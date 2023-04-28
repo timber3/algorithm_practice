@@ -1,102 +1,69 @@
-#include <iostream>
-#include <vector>
-#include <map>
-#include <algorithm>
-#include <string>
-#include <stdlib.h>
-#include <cmath>
-
-typedef long long ll;
+#include <bits/stdc++.h>
 
 using namespace std;
 
+int n, k;
+string str;
 
-// 문자열 치환은 replace로 가능 replace(0, win_size, "");
-// 문자열 검색해서 치환은 regex_replace( 대상 문자열, regex("바꿀 문자열"),"바뀔 문자열");
-// #include <regex> 필요
+map<string, int> m;
+
 int main()
 {
+	int t;
+	cin >> t;
 
-	int T;
-	cin >> T;
-
-
-	for (int t = 0; t < T; t++)
+	for (int T = 0; T < t; T++)
 	{
-		// 숫자의 개수 N, 크기 순서 K
-		int N, K;
-		string input;
-		string _input;
-		int result = 0;
+		cin >> n >> k;
 
+		cin >> str;
 
-		cin >> N >> K >> input;
+		int num_line = n / 4;
 
-		_input = input;
-		int str_size = input.size();
-		// 내림차순 정렬하기.
-		map< string, string, greater<string>> mapset;
-		int win_size = N / 4;
-
-		for (int i = 0; i < win_size; i++)
+		for (int j = 0; j < num_line; j++)
 		{
-			ll pass = 0;
-
-			for (int j = 0; j < 4; j++)
+			for (int i = 0; i < 4; i++)
 			{
-				// string을 나누고
-				string temp = input.substr(0, win_size);
-				// 문자열을 지우는건 erase로 가능
-				input.erase(0, win_size);
-				// 저장
-				mapset.insert({ temp, temp });
+				m.insert({ str.substr(i*num_line, num_line),0 });
 			}
 
-			// 마지막 문자 저장했다가.
-			char temp = _input[str_size-1];
-			// 마지막 문자 지워주고.
-			_input.erase(str_size - 1, str_size - 1);
-			// 마지막 문자를 맨앞에다 붙이기.
-			_input = temp + _input;
-			//_input.insert(0, to_string(temp)); 이렇게 저장하니까 'E' 값이 char69 로 들어감 ;
-
-			input = _input;
+			str.insert(str.begin(), str[n - 1]);
+			str.pop_back();
 
 		}
-		int index = 0;
 
-		for (auto a = mapset.begin(); a != mapset.end(); a++)
+		int cnt = 0;
+
+		string result_str;
+
+		for (auto iter = m.begin(); iter != m.end(); iter++)
 		{
-			if (index == K - 1)
-			{
-				int k = 0;
-				for (int i = win_size - 1; i >= 0 ; i--)
-				{
-					char temp = a->first[i];
-					int _temp;
-
-					if (temp >= 65)
-					{
-						_temp = temp - 55;
-					}
-					else
-					{
-						// atoi 대신 char 0의 값을 빼 준다.
-						// atoi 는 cstdlib 헤더에 있음.
-						_temp = temp - '0';
-					}
-
-					result += _temp * pow(16, k);
-
-					k++;
-				}
-			}
-
-			index++;
+			if (cnt == m.size()-k)
+				result_str = iter->first;
+			cnt++;
 		}
-		cout << "#" << t + 1 << " " << result << endl;
+
+		int sum = 0;
+
+		for (int i = 0; i < result_str.size(); i++)
+		{
+			char c = result_str[i];
+			// 문자라면
+			if (c >= 65)
+			{
+				sum += pow(16, result_str.size() - i - 1) * (c-55);
+			}
+			// 숫자라면
+			else
+			{
+				sum += pow(16, result_str.size() - i - 1) * (c - '0');
+			}
+		}
+
+		cout << "#" << T+1 << " " <<  sum << '\n';
+
+		m.clear();
 	}
-
 
 	return 0;
 }

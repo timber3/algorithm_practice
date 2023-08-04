@@ -19,10 +19,7 @@ public class Main {
 		
 		while (queue.size() != 1) {
 			queue.pollFirst();
-			if (queue.size() == 1)
-				break;
-			int v = queue.pollFirst();
-			queue.addLast(v);			
+			queue.addLast(queue.pollFirst());			
 		}
 		
 		int result = queue.poll();

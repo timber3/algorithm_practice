@@ -1,0 +1,6 @@
+SELECT distinct CC.CAR_ID 
+from CAR_RENTAL_COMPANY_CAR as CC 
+left join CAR_RENTAL_COMPANY_RENTAL_HISTORY as CRH
+on CC.CAR_ID = CRH.CAR_ID
+where CAR_TYPE = '세단' and MONTH(START_DATE) = 10
+Order by CC.CAR_ID desc;

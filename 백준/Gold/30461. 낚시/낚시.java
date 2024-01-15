@@ -9,8 +9,7 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
+		StringBuilder sb = new StringBuilder();
 		st = new StringTokenizer(br.readLine());
 		
 		n = Integer.parseInt(st.nextToken());
@@ -41,10 +40,10 @@ public class Main {
 			int a = Integer.parseInt(st.nextToken()) - 1;
 			int b = Integer.parseInt(st.nextToken()) - 1;
 			
-			bw.write(map[a][b] + "\n");
+			sb.append(map[a][b] + "\n");
 		}
-		bw.flush();
-		bw.close();
+
+		System.out.println(sb);
 	}
 	
 	static boolean inRange(int x, int y) {

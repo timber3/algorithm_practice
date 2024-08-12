@@ -1,21 +1,30 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 class Solution {
     public int solution(int[] nums) {
         int answer = 0;
-        int n = nums.length;
         
-        HashMap<Integer, Integer> map = new HashMap<>();
+        // 출력
+        // System.out.println(n);
         
-        for (int num : nums) {
-            map.put(num, 1);
+        int n = nums.length / 2;
+        int count = 0;
+        boolean[] pockets = new boolean[200001];
+        
+        for (int i = 0 ; i < nums.length ; i ++) {
+            if (!pockets[nums[i]]) {
+                pockets[nums[i]] = true;
+                count ++;
+            }
         }
         
-        if (map.size() < n/2) {
-            answer = map.size();
+        System.out.println(count);
+        
+        if (count >= n) {
+            answer = n;
         } else {
-            answer = n/2;
+            answer = count;
         }
         
         return answer;

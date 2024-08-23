@@ -1,31 +1,27 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 class Solution {
-    public String solution(int[] numbers) {
+    public String solution(int[] numbers) throws Exception {
         String answer = "";
         
-        String[] str = new String[numbers.length];
+        String[] arrs = new String[numbers.length];
         
-        for (int i = 0 ; i < numbers.length; i ++ ) {
-            str[i] = numbers[i] + "";
+        for (int i = 0 ; i < numbers.length ; i ++) {
+            arrs[i] = numbers[i] + "";
         }
         
-        Arrays.sort(str, (o1 , o2) -> {
-            return -(o1 + o2).compareTo(o2 + o1);
+        Arrays.sort(arrs, (a,b) -> {
+            return (b + a).compareTo(a + b);
         });
         
-        for (String s : str) {
-            answer += s;
+        for (int i = 0 ; i < arrs.length ; i ++) {
+            if (answer.length() == 0 && arrs[i].equals("0")) {
+                answer = "0";
+                break;
+            }
+            answer += arrs[i];
         }
-        
-        if (answer.charAt(0) == '0') {
-            answer = "0";
-        }
-        
-        // answer = answer.replace("^[0]+", "0");
-        // "[\d]{3}\-[\d]{4}-[\d]{4}"
-        // [\w\!\@\#\$\%\^]{8,12}
         
         return answer;
     }

@@ -2,80 +2,61 @@ import java.util.*;
 import java.io.*;
 
 class Solution {
-    int answer = 0;
     
-    boolean prime[] = new boolean[10_000_000];
-    int[] arr;
-    int sl;
-    int[] result = new int[7];
-    boolean[] used = new boolean[7];
-    boolean[] check = new boolean[10_000_000];
+    boolean[] used;
+    int result;
+    HashSet<Integer> set = new HashSet<>();
     
-    public int solution(String numbers) {
+    public int solution(String numbers) throws Exception {
         
-        Arrays.fill(prime, true);
+        used = new boolean[numbers.length()];
         
-        int n = 9_999_999;
+        dfs(0, numbers.length(), "", numbers);
         
-        prime[0] = prime[1] = false;
+        // 에라토스테네스의 체
         
-        for (int i = 2 ; i * i <= n ; i ++) {
-            if(prime[i]) {
-                for (int j = i*i ; j <= n ; j += i) {
-                    prime[j] = false;
+        loop : for (int value : set) {
+            if (value < 2) continue loop;
+            
+            // 제곱근까지만 검사하면 됨
+            for (int i = 2 ; i <= Math.sqrt(value); i++) {
+                if (value % i == 0) {
+                    continue loop;
                 }
             }
+            System.out.println(value);
+            result ++;
         }
         
-        sl = numbers.length();
+
         
-        arr = new int[sl];
+
         
-        for (int i = 0 ; i < sl ; i++) {
-            arr[i] = numbers.charAt(i) - '0';
-        }
         
-        for (int i = 1; i <= sl ; i ++) {
-            dfs(0, i);    
-        }
-        
-        for (int i = 0 ; i < 10_000_000 ; i ++) {
-            if(check[i])
-                answer++;
-        }
-        
-        return answer;
+        return result;
     }
     
-    void dfs(int cnt, int des) {
+    public void dfs(int cur, int target, String str, String origin) {
         
-        if (cnt == des) {
-            int val = 0;
-            int t = 1;
-            // 만든 숫자가 소수인지 확인한 후 return
-            for (int i = cnt-1 ; i >= 0 ; i --) {
-                val += result[i] * t;
-                t *= 10;
-            }
-            
-            if (prime[val])
-            {
-                System.out.print(val);
-                check[val] = true;
-            }
-                
-            
-            return;
+        // 1. 만들 수 있는 모든 조합을 만든다.
+        // 2. 해당 수가 소수인지 판별한다.
+        
+        if (cur == target) {
+            return;            
         }
         
-        for (int i = 0 ; i < sl; i ++) {
+        for (int i = 0 ; i < origin.length() ; i++) {
+            // 해당 숫자를 사용하고 넘어가기
             if (!used[i]) {
-                result[cnt] = arr[i];
                 used[i] = true;
-                dfs(cnt+1, des);
+                // set에 저장하여 중복을 제거하고 만들 수 있는 모든 경우의 수를 만든다.
+                set.add(Integer.parseInt(str + origin.charAt(i)));
+                dfs(cur + 1, target, str + origin.charAt(i), origin);
                 used[i] = false;
             }
-
+            
+            // 해당 숫자를 사용하지 않고 넘어가기
+            dfs(cur + 1, target, str, origin);
         }
     }
 }

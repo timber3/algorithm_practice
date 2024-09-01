@@ -1,59 +1,65 @@
-import java.util.ArrayList;
- 
+import java.util.*;
+import java.io.*;
+
 class Solution {
-    static ArrayList<Integer>[] graph;
-    static int min;
- 
-    public int solution(int n, int[][] wires) {
-        graph = new ArrayList[n + 1];
-        min = Integer.MAX_VALUE;
- 
-        // 그래프 ArrayList 초기화. 노드 개수만큼 ArrayList 생성
-        for (int i = 1; i <= n; i++) {
-            graph[i] = new ArrayList<>();
+    
+    boolean[][] map;
+    
+    public int solution(int n, int[][] wires) throws Exception {
+        
+        map = new boolean[n+1][n+1];
+        
+        for (int i = 0 ; i < wires.length ; i ++) {
+            map[wires[i][0]][wires[i][1]] = true;
+            map[wires[i][1]][wires[i][0]] = true;
         }
- 
-        // 양방향 간선 구조이므로 두 번 add를 해준다
-        for (int i = 0; i < wires.length; i++) {
-            int v1 = wires[i][0];
-            int v2 = wires[i][1];
-            graph[v1].add(v2);
-            graph[v2].add(v1);
-        }
- 
-        for (int i = 0; i < wires.length; i++) {
-            int v1 = wires[i][0];
-            int v2 = wires[i][1];
- 
-            boolean[] visited = new boolean[n + 1];
- 
-            // 해당 간선을 그래프에서 제거
-            graph[v1].remove(Integer.valueOf(v2));
-            graph[v2].remove(Integer.valueOf(v1));
- 
-            int cnt = dfs(1, visited); // 임의의 시작점에서 dfs 탐색
- 
-            int diff = Math.abs(cnt - (n - cnt));
-            min = Math.min(min, diff);
- 
-            // 그래프에 다시 간선 추가
-            graph[v1].add(v2);
-            graph[v2].add(v1);
-        }
- 
-        return min;
-    }
- 
-    static int dfs(int v, boolean[] visited) {
-        visited[v] = true;
-        int cnt = 1;
- 
-        for (int next : graph[v]) {
-            if (!visited[next]) {
-                cnt += dfs(next, visited);
+        
+        int result = 101;
+        
+        for (int i = 1 ; i <= n ; i++) {
+            for (int j = 1 ; j <= n ; j ++) {
+                // 연결 되어 있다면.
+                if (map[i][j]) {
+                    // 전력을 하나씩 끊기
+                    map[i][j] = false;
+                    map[j][i] = false;
+                    
+                    result = Math.min(bfs(n), result);
+
+                    map[i][j] = true;
+                    map[j][i] = true;
+                }
             }
         }
- 
-        return cnt;
+        
+        return result;
+    }
+    
+    public int bfs(int n) {
+        
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+        // 그냥 아무 노드 넣어서 몇개 이어져있나 확인하기
+        q.add(1);
+        
+        boolean[] visited = new boolean[n+1];
+        
+        visited[1] = true;
+        
+        int count = 1;
+        
+        while(!q.isEmpty()) {
+            int cur = q.poll();
+            
+            for (int i = 1 ; i <= n ; i ++) {
+                if (map[cur][i] && !visited[i]) {
+                    q.add(i);
+                    visited[i] = true;
+                    count ++;
+                }
+            }
+        }
+        
+        return Math.abs((n - count) - count);
+        
     }
 }

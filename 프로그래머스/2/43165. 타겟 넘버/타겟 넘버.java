@@ -1,29 +1,27 @@
+import java.util.*;
+import java.io.*;
+
 class Solution {
-    static int result;
     
-    public int solution(int[] numbers, int target) {
-        int answer = 0;
+    int count = 0;
+    
+    public int solution(int[] numbers, int target) throws Exception {
         
-        dfs(0, 0, numbers, target);
+        dfs(0, numbers.length, 0, target, numbers);
         
-        answer = result;
-        return answer;
+        return count;
     }
     
-    void dfs(int cnt, int sum, int[] numbers, int target) {
-        if (cnt == numbers.length) {
-            if (sum == target){
-                result ++;
-            }
+    public void dfs(int cur, int depth, int sum, int target, int[] numbers) {
+        
+        if (cur == depth) {
+            if (sum == target)
+                count ++;
             return;
         }
         
+        dfs(cur + 1, depth, sum + numbers[cur], target, numbers);
         
-        dfs(cnt + 1, sum + numbers[cnt], numbers, target);
-        
-        
-        dfs(cnt + 1, sum - numbers[cnt], numbers, target);
-
+        dfs(cur + 1, depth, sum - numbers[cur], target, numbers);
     }
 }
-

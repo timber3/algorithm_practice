@@ -2,49 +2,44 @@ import java.util.*;
 import java.io.*;
 
 class Solution {
-
-    static int[] visited;
     
-    class Node {
-        int x;
-        int y;
+    boolean[] visited;
         
-        Node(int x, int y) {
-            this.x = x;
-            this.y = y;
+    public int solution(int n, int[][] computers) throws Exception {
+        
+        int count = 0;
+        
+        visited = new boolean[n];
+        
+        for (int i = 0 ; i < n ; i ++) {
+            if (!visited[i]) {
+                bfs(i, computers, n);
+                count++;
+            }    
         }
+        
+        return count;
+        
     }
     
-    public int solution(int n, int[][] computers) {
-        int answer = 0;
+    public void bfs(int val, int[][] map, int n) {
         
-        visited = new int[n];
-        
-        int cnt = 0;
+        ArrayDeque<Integer> q = new ArrayDeque<>();
 
-        for (int i = 0 ; i < n ; i ++) {
+        q.add(val);
+        visited[val] = true;
+        
+        while(!q.isEmpty()) {
+            int cur = q.poll();
             
-            if (visited[i] == 0) {
-                answer ++;
-
-                Queue<Integer> q = new LinkedList<>();    
-                visited[i] = 1;
-
-                q.add(i);
-
-                while(!q.isEmpty()) {
-                    int cur = q.poll();
-                    
-                    for (int j = 0 ; j < n ; j++) {
-                        if (computers[cur][j] == 1 && visited[j] == 0) { 
-                            q.add(j);
-                            visited[j] = 1;
-                        }
-                    }
-                }  
-            }     
+            for (int i = 0 ; i < n ; i ++) {
+                // 연결이 되어있고 방문을 안했던 곳이라면.
+                if (!visited[i] && map[cur][i] == 1) {
+                    q.add(i);
+                    visited[i] = true;
+                }
+            }
         }
-    
-        return answer;
+        
     }
 }

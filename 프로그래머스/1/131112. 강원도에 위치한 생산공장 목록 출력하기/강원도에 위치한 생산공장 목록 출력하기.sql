@@ -1,4 +1,3 @@
--- 코드를 입력하세요
-SELECT FACTORY_ID, FACTORY_NAME, ADDRESS
-FROM FOOD_FACTORY
-WHERE Address like "강원도%";
+select FACTORY_ID, FACTORY_NAME, ADDRESS
+from FOOD_FACTORY 
+where ADDRESS like '강원%'

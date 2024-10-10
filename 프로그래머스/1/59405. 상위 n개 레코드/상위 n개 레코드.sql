@@ -1,4 +1,3 @@
 select NAME
 from ANIMAL_INS 
-order by DATETIME
-limit 1
+order by DATETIME limit 1

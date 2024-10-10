@@ -1,15 +1,13 @@
-select *
-from 
-    (select DATE_FORMAT(SALES_DATE, '%Y-%m-%d') as date, PRODUCT_ID, USER_ID, SALES_AMOUNT
-    from ONLINE_SALE
-    where month(SALES_DATE) = 3
+# select DATE_FORMAT(SALES_DATE,'%Y-%m-%d') SALES_DATE, PRODUCT_ID, coalesce(USER_ID, 'NULL') USER_ID, SALES_AMOUNT
+# from 
 
-    union all
-
-    select DATE_FORMAT(SALES_DATE, '%Y-%m-%d') as date, PRODUCT_ID, NULL as 'USER_ID', SALES_AMOUNT
-    from OFFLINE_SALE
-    where month(SALES_DATE) = 3) r
-order by r.date, r.PRODUCT_ID, r.USER_ID
-
-
-
+select DATE_FORMAT(SALES_DATE,'%Y-%m-%d') SALES_DATE, PRODUCT_ID, USER_ID, SALES_AMOUNT
+from (
+    select SALES_DATE, PRODUCT_ID, USER_ID, SALES_AMOUNT
+    from ONLINE_SALE 
+    where SALES_DATE like '2022-03%'
+    union
+    select SALES_DATE, PRODUCT_ID, NULL, SALES_AMOUNT
+    from OFFLINE_SALE  
+    where SALES_DATE like '2022-03%') a
+order by SALES_DATE, PRODUCT_ID, USER_ID asc;

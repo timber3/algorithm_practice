@@ -1,6 +1,6 @@
 # [level 4] 오프라인/온라인 판매 데이터 통합하기 - 131537 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131537) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131537#qna) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2023년 11월 6일 11:17:55
+2024년 10월 10일 10:46:05
 
 ### 문제 설명
 

@@ -1,40 +1,45 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
+
     static int n, m;
-    static int[] visited;
+    static int[] result;
+    static boolean[] visited;
 
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws Exception{
         st = new StringTokenizer(br.readLine());
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
-        visited = new int[m];
+        result = new int[m];
+        visited = new boolean[n+1];
 
-        combi(0, 1);
+        dfs(0, 1);
+
+        System.out.println(sb);
     }
 
-    static void combi(int cnt, int idx){
-        if (cnt == m) {
-            for (int i = 0 ; i < m; i ++) {
-                System.out.print(visited[i] + " ");
+    static void dfs(int cur, int idx) {
+
+        if (cur == m) {
+            for (int i = 0; i < result.length ; i ++) {
+                sb.append(result[i] + " ");
             }
-            System.out.println();
+            sb.append("\n");
+
             return;
         }
 
-        for (int i = idx; i <= n ; i ++) {
-
-            visited[cnt] = i;
-            combi(cnt+1, i);
+        for (int i = idx ; i <= n ; i ++) {
+            result[cur] = i;
+            dfs(cur + 1, i);
         }
     }
+
 }

@@ -1,59 +1,60 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
-    static int n, m;
-    static int arr[];
-    static int[] visited, result;
 
-    public static void main(String[] args) throws IOException {
+    static int n, m;
+    static int[] result;
+    static int[] arr;
+    static boolean[] visited;
+
+    public static void main(String[] args) throws Exception{
         st = new StringTokenizer(br.readLine());
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
         arr = new int[n];
-        result = new int[n];
-        visited = new int[n];
 
         st = new StringTokenizer(br.readLine());
 
-        for (int i = 0; i < n ; i ++)
+        for (int i = 0 ; i < n ; i++){
             arr[i] = Integer.parseInt(st.nextToken());
+        }
 
         Arrays.sort(arr);
 
-        combi(0, 0);
+        result = new int[m];
+        visited = new boolean[n+1];
 
-        System.out.print(sb);
+        dfs(0);
+
+        System.out.println(sb);
     }
 
-    static void combi(int cnt, int idx){
+    static void dfs(int cur) {
 
-        if (cnt == m) {
-            for (int i = 0 ; i < m; i ++) {
-//                System.out.print(result[i] + " ");
+        if (cur == m) {
+            for (int i = 0; i < result.length ; i ++) {
                 sb.append(result[i] + " ");
             }
             sb.append("\n");
-//            System.out.println();
+
             return;
         }
 
-        for (int i = 0; i < n ; i ++) {
-            if(visited[i] != 1){
-                visited[i] = 1;
-                result[cnt] = arr[i];
-                combi(cnt+1, i);
-                visited[i] = 0;
+        for (int i = 0 ; i < n ; i ++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                result[cur] = arr[i];
+                dfs(cur+1);
+                visited[i] = false;
             }
         }
     }
+
 }

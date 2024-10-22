@@ -7,10 +7,9 @@ public class Main {
     static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
 
-    static int n, m, result;
+    static int n;
     static int[][] map;
-    static boolean[] visited;
-
+    
     public static void main(String[] args) throws Exception {
 
         n = Integer.parseInt(br.readLine());
@@ -25,9 +24,7 @@ public class Main {
             }
         }
 
-        for (int i = 0 ; i < n ; i ++) {
-            bfs(i);
-        }
+        fw();
 
         for (int i = 0; i < n ; i ++) {
             for (int j = 0 ; j < n ; j ++) {
@@ -37,21 +34,14 @@ public class Main {
         }
     }
 
-    public static void bfs(int x) {
+    public static void fw() {
+        for (int i = 0 ; i < n ; i ++) {
+            for (int j = 0 ; j < n ; j ++) {
+                for (int k = 0 ; k < n ; k ++) {
 
-        ArrayDeque<Integer> q = new ArrayDeque<>();
-        visited = new boolean[n];
-        q.add(x);
-
-        while(!q.isEmpty()) {
-
-            int cur = q.poll();
-
-            for (int i = 0 ; i < n ; i ++) {
-                if (map[cur][i] == 1 && !visited[i]) {
-                    q.add(i);
-                    map[x][i] = 1;
-                    visited[i] = true;
+                    if (map[j][i] == 1 && map[i][k] == 1) {
+                        map[j][k] = 1;
+                    }
                 }
             }
         }

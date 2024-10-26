@@ -12,7 +12,6 @@ public class Main {
     static ArrayList<Edge>[] map;
     static long[] d;
     static int[] arr;
-    static boolean[] visited;
 
     static class Edge {
         int v;
@@ -36,8 +35,7 @@ public class Main {
         for (int i = 1 ; i <= n ; i ++) {
             map[i] = new ArrayList<>();
         }
-
-        visited = new boolean[n+1];
+        
         arr = new int[k];
 
         for (int i = 0 ; i < m ; i ++) {
@@ -98,8 +96,6 @@ public class Main {
             long cw = cur.w;
 
             if (d[cv] < cw) continue;
-            if (visited[cv]) continue;
-            visited[cv] = true;
 
             for (Edge e : map[cv]) {
                 if (d[e.v] > d[cv] + e.w) {

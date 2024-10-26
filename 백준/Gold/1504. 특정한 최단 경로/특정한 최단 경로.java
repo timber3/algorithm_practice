@@ -84,7 +84,7 @@ public class Main {
 
         PriorityQueue<Edge> pq = new PriorityQueue<>(
                 (o1, o2) -> {
-                    return o2.w - o1.w;
+                    return o1.w - o2.w;
                 }
         );
 

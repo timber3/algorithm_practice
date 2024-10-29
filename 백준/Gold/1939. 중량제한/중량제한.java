@@ -3,18 +3,21 @@ import java.io.*;
 
 public class Main {
 
+    // 최대값 중에서 최소 구하기 -> 이분탐색
+
     static StringTokenizer st;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     static ArrayList<Edge>[] map;
     static int n, m;
     static int start, end, max = Integer.MAX_VALUE;
-    static int[] dis;
+    static int[] visited;
 
     public static class Edge {
         int v;
         int w;
-        public Edge (int v, int w) {
+
+        public Edge(int v, int w) {
             this.v = v;
             this.w = w;
         }
@@ -27,19 +30,14 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
-        dis = new int[n+1];
+        map = new ArrayList[n + 1];
+        visited = new int[n + 1];
 
-        for (int i = 1 ; i <= n ; i ++) {
-            dis[i] = 0;
-        }
-
-        map = new ArrayList[n+1];
-
-        for (int i = 1 ; i <= n ; i ++) {
+        for (int i = 1; i <= n; i++) {
             map[i] = new ArrayList<>();
         }
 
-        for (int i = 0 ; i < m ; i ++ ) {
+        for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
 
             int from = Integer.parseInt(st.nextToken());
@@ -52,54 +50,62 @@ public class Main {
         }
 
         st = new StringTokenizer(br.readLine());
-
         start = Integer.parseInt(st.nextToken());
         end = Integer.parseInt(st.nextToken());
-
         // input
 
-        dij(start);
+        int left = 1;
+        int right = 1_000_000_000;
+        int result = 0;
 
-        System.out.println(dis[end]);
+        while (left <= right) {
 
+            int mid = (left + right) / 2;
+
+            // 10억 이하의 값에서 bfs 가 성공한다면(탐색이 가능하다면 -> mid 값 이하의 경로는 갈 수 없다는 전제 하에)
+            if (bfs(mid)) {
+                result = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        System.out.println(result);
     }
 
-    public static void dij(int start) {
-        // pq 는 무게가 큰 순으로 poll
-        PriorityQueue<Edge> pq = new PriorityQueue<>(
-                (o1, o2) -> {
-                    return o2.w - o1.w;
-                }
-        );
+    static boolean bfs(int target) {
 
-        // 현재 노드는 최대값
-        pq.add(new Edge(start, max));
-        dis[start] = max;
+        ArrayDeque<Edge> q = new ArrayDeque<>();
 
-        while(!pq.isEmpty()) {
-            // 갈 수 있는 간선 중에서 가중치(허용무게)가 큰 순으로 이동해야 함.
-            Edge cur = pq.poll();
+        q.add(new Edge(start, 0));
+
+        for (int i = 1; i <= n; i++) {
+            visited[i] = -1;
+        }
+
+        visited[start] = 0;
+
+        while (!q.isEmpty()) {
+            Edge cur = q.poll();
 
             int cv = cur.v;
-            int cw = cur.w;
 
-            // 더 작은 것들로 넘어가려고 하면 컷하기
-            if (dis[cv] > cw) continue;
-
-            // 일단 큰 것들 부터 먼저 확인하기 때문에
-            // 다음 노드에 해당하는 dis는 갈 수 있는 경로중 지나치는 무게중 최솟값 중 최대값 들어가있음
-            // 1. 현재까지의 dis 값
-            // 2. 다음 노드로 가는데 무게 값
-            
-            // 1, 2 중에서 작은 값과 다음 dis[e.v]를 비교해야 함  => 1, 2 중에서 더 큰 값은 어짜피 의미없기 때문
             for (Edge e : map[cv]) {
-                int minWeight = Math.min(dis[cv], e.w);
-
-                if (minWeight > dis[e.v]) {
-                    dis[e.v] = minWeight;
-                    pq.add(new Edge(e.v, minWeight));
+                if (e.w >= target && visited[e.v] == -1) {
+                    q.add(new Edge(e.v, e.w));
+                    visited[e.v] = 1;
                 }
             }
         }
+
+        if (visited[end] == -1) {
+            return false;
+        }
+
+        return true;
+
     }
+
+
 }

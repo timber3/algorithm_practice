@@ -5,6 +5,7 @@ public class Main {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
 
     static ArrayList<Integer>[] tree;
     static int[] visited;
@@ -39,8 +40,9 @@ public class Main {
         nodeSum(r);
 
         for (int i = 0 ; i < q ; i ++) {
-            System.out.println(visited[Integer.parseInt(br.readLine())]);
+            sb.append(visited[Integer.parseInt(br.readLine())]).append("\n");
         }
+        System.out.println(sb);
     }
 
     public static int nodeSum(int root) {

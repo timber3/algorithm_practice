@@ -37,16 +37,16 @@ public class Main {
                 String str = br.readLine();
                 for (int j = 0 ; j < m ; j ++) {
                     map[i][j] = str.charAt(j);
-
-                    // 만약 문이라면 위치를 저장해준다. ( 똑같은 문이 여러개일 수 있음 )
-                    if (map[i][j] != '.' && map[i][j] != '*' && map[i][j] != '$' && map[i][j] >= 65 && map[i][j] < 97) {
-                        if (!doorPos.containsKey(map[i][j])) {
-                            doorPos.put(map[i][j], new ArrayList<>());
-                            doorPos.get(map[i][j]).add(new Node(i,j));
-                        } else {
-                            doorPos.get(map[i][j]).add(new Node(i,j));
-                        }
-                    }
+//
+//                    // 만약 문이라면 위치를 저장해준다. ( 똑같은 문이 여러개일 수 있음 )
+//                    if (map[i][j] != '.' && map[i][j] != '*' && map[i][j] != '$' && map[i][j] >= 65 && map[i][j] < 97) {
+//                        if (!doorPos.containsKey(map[i][j])) {
+//                            doorPos.put(map[i][j], new ArrayList<>());
+//                            doorPos.get(map[i][j]).add(new Node(i,j));
+//                        } else {
+//                            doorPos.get(map[i][j]).add(new Node(i,j));
+//                        }
+//                    }
                 }
             }
 

@@ -1,7 +1,8 @@
--- 코드를 입력하세요
-select PRODUCT_ID, PRODUCT_NAME, PRODUCT_CD, CATEGORY, PRICE
-from (
-    SELECT Max(PRICE) as pp
+select *
+from FOOD_PRODUCT 
+where price in
+(
+    select max(price)
     from FOOD_PRODUCT
-    ) as t, FOOD_PRODUCT 
-where PRICE = t.pp
+)
+              

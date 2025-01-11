@@ -1,60 +1,54 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-
-    static StringTokenizer st;
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static StringBuilder sb = new StringBuilder();
-
-    static int T, n, count;
+    static int n;
     static int[] map;
     static boolean[] visited;
-    static boolean[] hasTeam;
-    static boolean[] done;
+    static boolean[] finished;
+    static int count;
 
-    public static void main(String[] args) throws Exception {
-        T = Integer.parseInt(br.readLine());
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
 
-        for (int t = 0 ; t < T ; t ++) {
+        while (t-- > 0) {
             n = Integer.parseInt(br.readLine());
+            map = new int[n + 1];
+            visited = new boolean[n + 1];
+            finished = new boolean[n + 1];
             count = 0;
 
-            map = new int[n+1];
-            hasTeam = new boolean[n+1];
-            visited = new boolean[n+1];
-            done = new boolean[n+1];
-
-            st = new StringTokenizer(br.readLine());
-            for (int i = 1 ; i <= n ; i ++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int i = 1; i <= n; i++) {
                 map[i] = Integer.parseInt(st.nextToken());
             }
 
-            for (int i = 1 ; i <= n ; i++) {
-                // 자기 자신을 가르키는지 확인하기
-                if(!done[i]) {
+            for (int i = 1; i <= n; i++) {
+                if (!finished[i]) {
                     dfs(i);
                 }
             }
 
             System.out.println(n - count);
         }
+        br.close();
     }
 
-    static void dfs(int i) {
-        if(visited[i]){
-            done[i] = true;
+    static void dfs(int current) {
+        visited[current] = true;
+        int next = map[current];
+
+        if (!visited[next]) {
+            dfs(next);
+        } else if (!finished[next]) {
+            for (int i = next; i != current; i = map[i]) {
+                count++;
+            }
             count++;
-        }else{
-            visited[i] = true;
         }
-
-        // 다음 학생이 팀 결성을 아직 못했을 경우
-        if(!done[map[i]]){
-            dfs(map[i]);
-        }
-
-        visited[i] = false;
-        done[i] = true;
+        finished[current] = true;
     }
 }

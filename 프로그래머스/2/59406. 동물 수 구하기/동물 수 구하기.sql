@@ -1,2 +1,2 @@
 select count(*)
-from ANIMAL_INS 
+from animal_ins

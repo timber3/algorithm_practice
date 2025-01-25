@@ -28,18 +28,17 @@ public class Main {
         int left = 0;
         int right = 0;
 
-        while(left < n || right < n) {
-            // 사용하지 않은 값이면
-            if (right < n && !used[arr[right]]) {
+        while (right < n) {
+            if (!used[arr[right]]) {
                 used[arr[right]] = true;
-                right ++;
+                right++;
                 count += right - left;
-            } else if (left < n){
+            } else {
                 used[arr[left]] = false;
-                left ++;
+                left++;
             }
         }
-        
+
         System.out.println(count);
     }
 }

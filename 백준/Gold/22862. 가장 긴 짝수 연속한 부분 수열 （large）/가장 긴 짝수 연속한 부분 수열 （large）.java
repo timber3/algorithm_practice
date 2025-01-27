@@ -7,7 +7,7 @@ public class Main {
     static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
 
-    static int n, k, max = Integer.MIN_VALUE;
+    static int n, k, max;
     static int[] arr;
 
     public static void main(String[] args) throws Exception {
@@ -34,6 +34,7 @@ public class Main {
             // 짝수면
             if (right < n && arr[right] % 2 == 0) {
                 len ++;
+                if (len > max) max = len;
                 right ++;
             }
             // 홀수인데
@@ -59,10 +60,7 @@ public class Main {
                     left ++;
                 }
             }
-
-            if (len > max) max = len;
         }
-
         System.out.println(max);
     }
 }

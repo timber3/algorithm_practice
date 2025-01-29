@@ -1,17 +1,48 @@
--- 코드를 입력하세요
-# select ri.FOOD_TYPE, ri.REST_ID, ri.REST_NAME, ri.FAVORITES
-# from 
-#     (select FOOD_TYPE, max(FAVORITES) as mf
-#     from REST_INFO 
-#     group by FOOD_TYPE
-#     ) t join REST_INFO ri on t.mf = ri.FAVORITES
-# order by FOOD_TYPE desc
+# select
+#     food_type, rest_id, rest_name, favorites
+# from
+#     rest_info
+# where
+#     (rest_id) in (
+#         select
+#             rest_id
+#         from
+#             rest_info
+#         group by
+#             food_type
+#         having
+#             max(favorites)
+#     )
+# order by
+#     food_type desc
 
-select a.FOOD_TYPE, a.REST_ID, a.REST_NAME, b.m
-from REST_INFO a
-    join (
-        select FOOD_TYPE, MAX(FAVORITES) as m
-        from REST_INFO
-        group by FOOD_TYPE
-    ) b on a.FOOD_TYPE = b.FOOD_TYPE and b.m = a.FAVORITES
-order by a.FOOD_TYPE desc
+
+# SELECT
+#     food_type, rest_id, rest_name, favorites
+# FROM
+#     rest_info
+# WHERE
+#     (food_type, favorites) IN (
+#         SELECT food_type, MAX(favorites)
+#         FROM rest_info
+#         GROUP BY food_type
+# )
+# ORDER BY
+#     food_type DESC;
+
+
+SELECT
+    food_type, rest_id, rest_name, favorites
+FROM
+    rest_info
+WHERE
+    (favorites, food_type) IN (
+        SELECT 
+            MAX(favorites), food_type
+        FROM
+            rest_info
+        GROUP BY
+            food_type
+    )
+ORDER BY
+    food_type DESC;

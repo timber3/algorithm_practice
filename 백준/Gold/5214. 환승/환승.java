@@ -6,7 +6,7 @@ public class Main {
     static StringTokenizer st;
 
     static int n, k, m;
-    static HashSet<Integer>[] map;
+    static ArrayList<Integer>[] map;
     static int[] visited;
 
     public static void main(String[] args) throws Exception {
@@ -18,11 +18,11 @@ public class Main {
 
         // 모든 역 + 하이퍼튜브 ( 해당 하이퍼튜브 안에는 어떤 역들이 있는지 나타냄 )
         // 중복된 역이 들어가는걸 방지하기 위해 set으로 선언
-        map = new HashSet[n + m + 1];
+        map = new ArrayList[n + m + 1];
         visited = new int[n + m + 1];
 
         for (int i = 1; i <= n + m ; i++) {
-            map[i] = new HashSet<>();
+            map[i] = new ArrayList<>();
             visited[i] = -1;
         }
 

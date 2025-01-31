@@ -1,4 +1,10 @@
-select ANIMAL_TYPE, count(ANIMAL_TYPE)
-from ANIMAL_INS 
-group by ANIMAL_TYPE
-order by ANIMAL_TYPE
+select
+    animal_type, count(*)
+from
+    animal_ins
+group by
+    animal_type
+having
+    animal_type = 'Cat' or animal_type = 'Dog'
+order by
+    1

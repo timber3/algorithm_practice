@@ -1,7 +1,11 @@
 
-
-select NAME, count(NAME) count
-from ANIMAL_INS
-group by NAME
-having count >= 2
-order by NAME
+select
+    name, count(*) s
+from
+    animal_ins
+group by
+    name
+having
+    count(*) >= 2 and name is not null
+order by
+    name

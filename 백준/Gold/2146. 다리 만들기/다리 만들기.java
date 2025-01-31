@@ -46,7 +46,8 @@ public class Main {
         for (int i = 0 ; i < n ; i++) {
             for (int j = 0 ; j < n ; j ++) {
                 if (border[i][j]) {
-                    min = Math.min(min, findAnotherLand(i, j));
+                    int val = findAnotherLand(i, j);
+                    if (min > val) min = val;
                 }
             }
         }

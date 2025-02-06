@@ -44,7 +44,7 @@ public class Main {
             return;
 
         for (int i = 0 ; i < 11; i ++) {
-            if (!visited[i] && map[depth][i] != 0) {
+            if (map[depth][i] != 0 && !visited[i]) {
                 visited[i] = true;
                 dfs(depth + 1, sum + map[depth][i]);
                 visited[i] = false;

@@ -1,5 +1,7 @@
-SELECT AI.ANIMAL_ID, AI.NAME
-FROM ANIMAL_INS AS AI JOIN ANIMAL_OUTS AS AO
-ON AI.ANIMAL_ID = AO.ANIMAL_ID
-WHERE TIMESTAMPDIFF(second, AO.DATETIME, AI.DATETIME) > 0
-ORDER BY AI.DATETIME
+select a.animal_id, a.name
+
+from animal_ins a join animal_outs b on (a.animal_id = b.animal_id)
+
+where a.datetime > b.datetime
+
+order by a.datetime

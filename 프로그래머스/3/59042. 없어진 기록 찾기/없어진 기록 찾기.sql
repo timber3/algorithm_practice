@@ -1,5 +1,4 @@
--- 코드를 입력하세요
-SELECT ao.ANIMAL_ID ANIMAL_ID, ao.NAME NAME
-from ANIMAL_OUTS as ao left join ANIMAL_INS as ai
-on ai.ANIMAL_ID = ao.ANIMAL_ID
-where ai.ANIMAL_ID is null;
+select distinct(a.animal_id), a.name
+from animal_outs a left join animal_ins b on (a.animal_id = b.animal_id)
+where b.animal_id is null
+order by a.animal_id, a.name

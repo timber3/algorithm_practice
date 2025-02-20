@@ -1,7 +1,14 @@
--- 코드를 입력하세요
-SELECT AI.NAME, AI.DATETIME
+# with result as (
+    
+# )
 
-from ANIMAL_INS as AI left join ANIMAL_OUTS as AO 
-on AI.ANIMAL_ID = AO.ANIMAL_ID
-where AO.ANIMAL_ID is null
-order by AI.DATETIME limit 3;
+# select *
+# from result
+# order by datetime
+
+
+select a.name name, a.datetime datetime
+    from ANIMAL_INS a left join ANIMAL_OUTS b on (a.ANIMAL_ID = b.ANIMAL_ID)
+    where b.datetime is null
+    order by a.datetime
+    limit 3

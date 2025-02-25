@@ -1,0 +1,28 @@
+WITH trucks AS (
+    SELECT * 
+    FROM CAR_RENTAL_COMPANY_CAR 
+    WHERE CAR_TYPE = '트럭'
+), 
+truckPer AS (
+    SELECT 
+        *, 
+        DATEDIFF(END_DATE, START_DATE) + 1 AS diff,
+        CASE
+            WHEN DATEDIFF(END_DATE, START_DATE) + 1 >= 90 THEN '90일 이상'
+            WHEN DATEDIFF(END_DATE, START_DATE) + 1 >= 30 THEN '30일 이상'
+            WHEN DATEDIFF(END_DATE, START_DATE) + 1 >= 7 THEN '7일 이상'
+            ELSE 'none'
+        END AS period
+    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+    WHERE CAR_ID IN (SELECT CAR_ID FROM trucks)
+)
+
+SELECT 
+    t1.HISTORY_ID, 
+    ROUND((t2.DAILY_FEE * t1.diff / 100) * (100 - COALESCE(t3.DISCOUNT_RATE, 0))) AS fee
+FROM trucks t2
+JOIN truckPer t1 ON t1.CAR_ID = t2.CAR_ID
+LEFT JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN t3 
+    ON t1.period = t3.DURATION_TYPE 
+    AND t3.CAR_TYPE = '트럭'
+ORDER BY fee DESC, t1.HISTORY_ID DESC;

@@ -7,12 +7,7 @@ public class Main {
     static StringBuilder sb = new StringBuilder();
     static StringTokenizer st;
 
-    static int n, max = Integer.MIN_VALUE;
-    static PriorityQueue<Integer> pq = new PriorityQueue<>(
-            (o1, o2) -> {
-                return o2 - o1;
-            }
-    );
+    static int n, max;
     static int[] arr, dp;
 
     public static void main(String[] args) throws IOException {
@@ -27,13 +22,14 @@ public class Main {
         }
 
         dp[0] = arr[0];
-        pq.add(dp[0]);
+        max = arr[0];
 
         for (int i = 1 ; i < n ; i ++) {
             dp[i] = Math.max(dp[i-1] + arr[i], arr[i]);
-            pq.add(dp[i]);
+            if (dp[i] > max) max = dp[i];
         }
 
-        System.out.println(pq.poll());
+        System.out.println(max);
+
     }
 }

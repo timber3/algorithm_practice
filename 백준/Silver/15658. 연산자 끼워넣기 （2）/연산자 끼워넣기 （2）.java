@@ -30,8 +30,7 @@ public class Main {
 
         dfs(0, arr[0]);
 
-        System.out.println(max);
-        System.out.println(min);
+        System.out.println(sb.append(max).append('\n').append(min));
     }
 
     static void dfs(int depth, int sum) {
@@ -66,4 +65,5 @@ public class Main {
             operator[3] ++;
         }
     }
+
 }

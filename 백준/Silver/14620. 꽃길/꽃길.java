@@ -27,12 +27,12 @@ public class Main {
             }
         }
 
-        dfs(0);
+        dfs(0, 1, 1);
 
         System.out.println(min);
     }
 
-    static void dfs(int depth) {
+    static void dfs(int depth, int x, int y) {
         if (depth == 3) {
             int sum = 0;
 
@@ -49,8 +49,8 @@ public class Main {
             return;
         }
 
-        for (int i = 1 ; i < n-1 ; i ++) {
-            for (int j = 1 ; j < n-1 ; j ++) {
+        for (int i = x ; i < n-1 ; i ++) {
+            for (int j = (i == x) ? y : 0 ; j < n-1 ; j ++) {
                 if (canPlant(i, j) && !visited[i][j]) {
 
                     visited[i][j] = true;
@@ -60,7 +60,7 @@ public class Main {
                         visited[nx][ny] = true;
                     }
 
-                    dfs(depth + 1);
+                    dfs(depth + 1, i, j);
 
                     visited[i][j] = false;
                     for (int k = 0 ; k < 4 ; k ++) {
@@ -74,7 +74,7 @@ public class Main {
     }
 
     static boolean canPlant(int cx, int cy) {
-        for (int i = 0 ; i < 4 ; i ++) {
+        for (int i = 0 ; i < 4; i ++) {
             int nx = cx + dx[i];
             int ny = cy + dy[i];
 

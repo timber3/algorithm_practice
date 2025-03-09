@@ -9,6 +9,7 @@ public class Main {
     static int n, m;
     static HashMap<Integer, String> intMap = new HashMap<>();
     static HashMap<String, Integer> stringMap = new HashMap<>();
+    static String[] intArr;
 
     public static void main(String[] args) throws IOException {
         st = new StringTokenizer(br.readLine());
@@ -18,12 +19,13 @@ public class Main {
         // 문제
         m = Integer.parseInt(st.nextToken());
 
+        intArr = new String[n+1];
+
         for (int i = 1 ; i <= n ; i ++ ) {
             String str = br.readLine();
 
-            intMap.put(i,str);
+            intArr[i] = str;
             stringMap.put(str,i);
-
         }
 
         for (int i = 0 ; i < m ; i ++ ){
@@ -32,9 +34,8 @@ public class Main {
             if ((first >= 'a' && first <= 'z') || (first >= 'A' && first <= 'Z')) {
                 System.out.println(stringMap.get(str));
             } else {
-                System.out.println(intMap.get(Integer.parseInt(str)));
+                System.out.println(intArr[Integer.parseInt(str)]);
             }
         }
-
     }
 }

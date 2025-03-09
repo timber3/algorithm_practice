@@ -5,6 +5,7 @@ public class Main {
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
 
     static int n, m;
     static HashMap<Integer, String> intMap = new HashMap<>();
@@ -32,10 +33,11 @@ public class Main {
             String str = br.readLine();
             char first = str.charAt(0);
             if ((first >= 'a' && first <= 'z') || (first >= 'A' && first <= 'Z')) {
-                System.out.println(stringMap.get(str));
+                sb.append(stringMap.get(str)).append('\n');
             } else {
-                System.out.println(intArr[Integer.parseInt(str)]);
+                sb.append(intArr[Integer.parseInt(str)]).append('\n');
             }
         }
+        System.out.println(sb);
     }
 }

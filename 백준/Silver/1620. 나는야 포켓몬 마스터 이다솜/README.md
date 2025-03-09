@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 51336 KB, 시간: 1284 ms
+메모리: 53892 KB, 시간: 416 ms
 
 ### 분류
 
@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2025년 3월 9일 11:09:55
+2025년 3월 9일 11:11:36
 
 ### 문제 설명
 
@@ -110,7 +110,7 @@
 
 <p><img alt="" src="https://www.acmicpc.net/upload/201004/pf.PNG" style="height:183px; width:274px"></p>
 
-<p><img alt="" src="" style="height:181px; width:274px"></p>
+<p><img alt="" src="https://www.acmicpc.net/upload/201004/pg.PNG" style="height:181px; width:274px"></p>
 
 <p><img alt="" src="https://www.acmicpc.net/upload/201004/ph.PNG" style="height:184px; width:274px"></p>
 

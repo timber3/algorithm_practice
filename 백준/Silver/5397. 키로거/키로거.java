@@ -7,7 +7,7 @@ public class Main {
     static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
 
-    static int T, cursor;
+    static int T;
     static String str;
     static LinkedList<Character> result;
 
@@ -17,27 +17,29 @@ public class Main {
         for (int t= 0 ; t < T ; t ++) {
             str = br.readLine();
             result = new LinkedList<>();
-            cursor = 0;
+            // linkedList의 커서 담당을 할 ListIterator
+            ListIterator<Character> cursor = result.listIterator();
 
             for (int i = 0 ; i < str.length() ; i ++) {
                 char order = str.charAt(i);
 
                 if (order == '-') {
-                    if (cursor != 0) {
-                        result.remove(cursor-1);
-                        cursor --;
+                    if (cursor.hasPrevious()) {
+                        cursor.previous();
+                        cursor.remove();
                     }
                 } else if (order == '<') {
                     // 커서는 0보다 커야한다.
-                    if (cursor != 0)
-                        cursor --;
+                    if (cursor.hasPrevious()) {
+                        cursor.previous();
+                    }
                 } else if (order == '>') {
                     // 커서는 최대 문자열 길이까지 가능
-                    if (cursor != result.size())
-                        cursor ++;
+                    if (cursor.hasNext()) {
+                        cursor.next();
+                    }
                 } else {
-                    result.add(cursor, order);
-                    cursor++;
+                    cursor.add(order);
                 }
             }
 

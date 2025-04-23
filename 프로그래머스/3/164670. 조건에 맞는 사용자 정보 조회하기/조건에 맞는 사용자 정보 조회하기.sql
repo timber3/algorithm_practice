@@ -1,14 +1,8 @@
--- 코드를 입력하세요
+-- 사용자 ID, 닉네임, 전체주소, 전화번호
 
-SELECT gu.USER_ID, gu.NICKNAME, concat(gu.CITY, " ", gu.STREET_ADDRESS1, " ", gu.STREET_ADDRESS2),
-CONCAT(SUBSTR(gu.TLNO, 1, 3), "-", SUBSTR(gu.TLNO, 4, 4) , "-", SUBSTR(gu.TLNO, 8,4))
-
-FROM (
-    SELECT WRITER_ID as wi, COUNT(WRITER_ID) as cw
-    FROM USED_GOODS_BOARD
-    GROUP BY WRITER_ID
-    ) as t join USED_GOODS_USER as gu on t.wi = gu.USER_ID
-
-WHERE t.cw >= 3
-
-ORDER BY USER_ID desc
+select writer_id, nickname, concat(CITY,' ', STREET_ADDRESS1, ' ', STREET_ADDRESS2),
+concat(substring(tlno, 1, 3), '-' , substring(tlno, 4, 4) , '-' , substring(tlno, 8,4))
+from USED_GOODS_BOARD a join USED_GOODS_USER b on (a.WRITER_ID = b.user_id)
+group by writer_id
+having count(*) >= 3
+order by 1 desc

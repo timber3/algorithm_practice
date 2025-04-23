@@ -1,6 +1,10 @@
-SELECT distinct CC.CAR_ID 
-from CAR_RENTAL_COMPANY_CAR as CC 
-left join CAR_RENTAL_COMPANY_RENTAL_HISTORY as CRH
-on CC.CAR_ID = CRH.CAR_ID
-where CAR_TYPE = '세단' and MONTH(START_DATE) = 10
-Order by CC.CAR_ID desc;
+with sedan as (
+    select a.car_id, car_type, daily_fee, start_date, end_date, options
+    from CAR_RENTAL_COMPANY_CAR a join CAR_RENTAL_COMPANY_RENTAL_HISTORY b on (a.car_id = b.car_id)
+    where car_type = '세단' and start_date like "%-10-%"
+)
+
+
+select distinct car_id
+from sedan
+order by 1 desc

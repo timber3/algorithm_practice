@@ -9,5 +9,5 @@ select
         when STATUS = 'DONE' then '거래완료'
     end as status
 from USED_GOODS_BOARD 
-where DATE_FORMAT(CREATED_DATE, '%Y-%m-%d') = '2022-10-05'
+where created_date regexp '2022-10-05'
 order by BOARD_ID desc

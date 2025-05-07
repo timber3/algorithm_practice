@@ -64,6 +64,8 @@ public class Main {
             int cx = cur.x;
             int cy = cur.y;
 
+            if (d[cx][cy] < cur.cost) continue;
+
             for (int i = 0 ; i < 4 ; i ++) {
 
                 int nx = cx + dx[i];
@@ -71,15 +73,12 @@ public class Main {
 
                 if (nx < 0 || ny < 0 || nx >= n || ny >= n ) continue;
 
-                // 다음 갈 곳이 흰 방이면 비용 x
-                if (map[nx][ny] == 1 && d[nx][ny] > d[cx][cy]) {
-                    d[nx][ny] = d[cx][cy];
-                    pq.offer(new Node(nx, ny, d[cx][cy]));
-                }
-                // 다음 갈 곳이 검은 방이면 비용 + 1
-                if (map[nx][ny] == 0 && d[nx][ny] > d[cx][cy] + 1) {
-                    d[nx][ny] = d[cx][cy] + 1;
-                    pq.offer(new Node(nx, ny, d[cx][cy] + 1));
+                int nextCost = d[cx][cy] + (map[nx][ny] == 0 ? 1 : 0);
+
+                // 비용 갱신 조건을 큐에 넣기 전에 판단
+                if (nextCost < d[nx][ny]) {
+                    d[nx][ny] = nextCost;
+                    pq.offer(new Node(nx, ny, nextCost));
                 }
             }
 

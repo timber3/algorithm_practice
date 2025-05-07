@@ -14,13 +14,18 @@ public class Main {
     static int[] dx = {0, 0, -1, 1};
     static int[] dy = {-1, 1, 0, 0};
 
-    static class Node {
+    static class Node implements Comparable<Node>{
         int x, y, cost;
 
         public Node(int x, int y, int cost) {
             this.x = x;
             this.y = y;
             this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return this.cost - o.cost;
         }
     }
 
@@ -52,9 +57,7 @@ public class Main {
 
     static void dij() {
 
-        PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> {
-            return o1.cost - o2.cost;
-        });
+        PriorityQueue<Node> pq = new PriorityQueue<>();
         d[0][0] = 0;
         pq.offer(new Node(0, 0, 0));
 
@@ -64,8 +67,6 @@ public class Main {
             int cx = cur.x;
             int cy = cur.y;
 
-            if (d[cx][cy] < cur.cost) continue;
-
             for (int i = 0 ; i < 4 ; i ++) {
 
                 int nx = cx + dx[i];
@@ -73,12 +74,15 @@ public class Main {
 
                 if (nx < 0 || ny < 0 || nx >= n || ny >= n ) continue;
 
-                int nextCost = d[cx][cy] + (map[nx][ny] == 0 ? 1 : 0);
-
-                // 비용 갱신 조건을 큐에 넣기 전에 판단
-                if (nextCost < d[nx][ny]) {
-                    d[nx][ny] = nextCost;
-                    pq.offer(new Node(nx, ny, nextCost));
+                // 다음 갈 곳이 흰 방이면 비용 x
+                if (map[nx][ny] == 1 && d[nx][ny] > d[cx][cy]) {
+                    d[nx][ny] = d[cx][cy];
+                    pq.offer(new Node(nx, ny, d[cx][cy]));
+                }
+                // 다음 갈 곳이 검은 방이면 비용 + 1
+                if (map[nx][ny] == 0 && d[nx][ny] > d[cx][cy] + 1) {
+                    d[nx][ny] = d[cx][cy] + 1;
+                    pq.offer(new Node(nx, ny, d[cx][cy] + 1));
                 }
             }
 

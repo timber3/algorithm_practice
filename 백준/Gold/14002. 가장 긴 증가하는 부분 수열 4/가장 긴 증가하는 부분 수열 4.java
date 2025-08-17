@@ -1,59 +1,43 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-    static StringTokenizer st;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringBuilder sb = new StringBuilder();
-    
-    static int n, maxLen, maxIdx;
-    static int[] arr, dp, prev;
-
-    public static void main(String[] args) throws Exception {
-        n = Integer.parseInt(br.readLine());
-        
-        arr = new int[n];
-        dp = new int[n];
-        prev = new int[n];
-
+    static StringTokenizer st;
+    static int N, index , max = 0;
+    static int[] arr, dp, pre;
+    static Stack<Integer> trace = new Stack<>();
+    public static void main(String[] args) throws IOException {
+        N = Integer.parseInt(br.readLine());
+        arr = new int [N];
+        pre = new int [N];
+        Arrays.fill(pre,-1);
+        dp = new int [N];
         st = new StringTokenizer(br.readLine());
-        
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-        }
-
-        for (int i = 0; i < n; i++) {
-            // 초기화
-            dp[i] = 1;
-            prev[i] = -1;
-            
-            // 처음부터 순회하면서 해당 값이 더 크고, dp + 1 한 값이 더 크면 갱신
-            for (int j = 0; j < i; j++) {
-                if (arr[j] < arr[i] && dp[j] + 1 > dp[i]) {
-                    dp[i] = dp[j] + 1;
-                    prev[i] = j;
+        for(int i=0;i < N ;i++) arr[i] = Integer.parseInt(st.nextToken());
+        for(int i=1 ; i < N ; i++) {
+            for(int j=i-1 ; j >=0 ; j--) {
+                if(arr[i] > arr[j] && dp[i] < dp[j] + 1) {
+                    dp[i] = dp[j] +1;
+                    pre[i] = j;
                 }
             }
-            
-            if (dp[i] > maxLen) {
-                maxLen = dp[i];
-                maxIdx = i;
+        }
+        for(int i=0;i < N ;i++) {
+            if(max < dp[i]) {
+                max = dp[i];
+                index = i;
             }
         }
-
-        sb.append(maxLen).append('\n');
-
-        Stack<Integer> stack = new Stack<>();
-        int cur = maxIdx;
-        while (cur != -1) {
-            stack.push(arr[cur]);
-            cur = prev[cur];
+        sb.append(max+1).append("\n");
+        while(index != -1) {
+            trace.add(arr[index]);
+            index = pre[index];
         }
-        
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop()).append(' ');
+        while(!trace.isEmpty()) {
+            sb.append(trace.pop()).append(" ");
         }
-
-        System.out.println(sb);
+        System.out.print(sb);
     }
 }
